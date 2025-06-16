@@ -19,4 +19,4 @@ def get_email_by_id():
     if match:
         return jsonify(match)
     else:
-        return jsonify({"error": f"No email found with ID {email_id}."}), 404)
+        return jsonify({"error": f"No email found with ID {email_id}."}), 404
