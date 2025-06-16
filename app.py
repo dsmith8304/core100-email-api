@@ -5,9 +5,7 @@ import os
 app = Flask(__name__)
 
 # Load email data once at startup
-json_path = os.path.join(os.path.dirname(__file__), 'Core100EmailLibrary.json')
-with open(json_path, 'r') as f:
-    emails = json.load(f)
+with open('Core100EmailLibrary.json', 'r') as f:
 
 @app.route('/email')
 def get_email_by_id():
