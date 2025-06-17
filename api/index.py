@@ -11,31 +11,28 @@ try:
     with open(json_path, 'r', encoding='utf-8') as f:
         emails = json.load(f)
 except Exception as e:
-    # This is now just a fallback for safety.
     emails = []
     print(f"CRITICAL ERROR LOADING JSON: {e}")
-# --- End of Block ---
 
-
-# --- The Main API Endpoint ---
+# --- The Main API Endpoint with a HARD-CODED test ---
 @app.route('/email', methods=['GET'])
 def get_email_by_id():
-    # This is the line your theory correctly identified as the last untested part.
-    email_id = request.args.get('email_id')
+    # The original line that reads from the URL is commented out.
+    # email_id = request.args.get('email_id')
     
-    if not email_id:
-        return jsonify({"error": "Please provide an email_id parameter."}), 400
-
+    # As you suggested, we supply the email_id directly to test the logic.
+    email_id = "2.2" 
+    
     if not emails:
         return jsonify({"error": "Email data could not be loaded. Check server logs."}), 500
 
     match = next((e for e in emails if e.get("email_id") == email_id), None)
     
     if match:
+        # If the lookup succeeds, return the actual JSON data for email 2.2
         return jsonify(match)
     else:
-        return jsonify({"error": f"No email found with ID {email_id}."}), 404
-
+        return jsonify({"error": f"No email found with hard-coded ID {email_id}."}), 404
 
 # --- The Status Check Endpoint ---
 @app.route('/status', methods=['GET'])
