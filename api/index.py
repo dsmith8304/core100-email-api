@@ -4,12 +4,15 @@ import os
 
 app = Flask(__name__)
 
-# --- NEW ROBUST LOADING ---
+# --- FINAL CORRECTED LOADING ---
 try:
-    # Explicitly specify UTF-8 encoding for better compatibility
-    with open('Core100EmailLibrary.json', 'r', encoding='utf-8') as f:
-        emails = json.load(f)
+    # Get the absolute path of the directory where this script is running
+    script_dir = os.path.dirname(__file__) 
+    # Construct the path to the JSON file, which is now in the parent directory
+    json_path = os.path.join(script_dir, '..', 'Core100EmailLibrary.json')
 
+    with open(json_path, 'r', encoding='utf-8') as f:
+        emails = json.load(f)
 except FileNotFoundError:
     # This case is for when the file doesn't exist at all.
     emails = []
