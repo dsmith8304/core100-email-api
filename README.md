@@ -1,35 +1,51 @@
-# core100-email-api
-Fetches email descriptions for Caprai from Core100EmailLibrary.json.
-This is a lightweight Flask-based API that serves CapsimCore Inbox emails from a structured JSON file.
+# Core100 Email API
 
-## 🔍 What It Does
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdsmith8304%2Fcore100-email-library-js)
 
-This API exposes a single endpoint:
+A serverless API deployed on Vercel that serves email data for the CapsimCore experience.
 
-Where `x.y` is the ID of a specific email (e.g., `1.1`, `2.3`, etc.) as defined in the `Core100EmailLibrary.json` file.
+## ✨ Tech Stack
 
-The API returns the full email object, including character, introduction, response type, and options—designed for deterministic lookup from a GPT or other front-end.
+* **Node.js**: The JavaScript runtime environment.
+* **Vercel**: For Serverless Functions and global deployment.
+* **GitHub Codespaces**: For the cloud-based development environment.
 
-## 📁 Files
+## 📁 Final Project Structure
 
-- `Core100EmailLibrary.json` — Structured data source for all Core100 emails.
-- `app.py` — Flask server code to load and serve the email data.
+The project uses a co-located data and logic structure within the `api` directory, which is a Vercel convention.
 
-## 🧪 Sample Request
+.
+├── api/
+│   ├── email-data.js   # The email data, exported as a JS module.
+│   └── email.js        # The serverless function API endpoint.
+├── package.json        # Project metadata.
+└── README.md           # This file.
+
+
+## 🚀 API Endpoint
+
+The API exposes a single endpoint to retrieve email details by ID.
+
+### Production URL
+
+`https://core100-email-library-js.vercel.app/api/email`
+
+### Query Parameter
+
+* `email_id` (string): The ID of the email to fetch (e.g., `2.1`).
+
+### Example Request
 
 ```bash
-curl "http://localhost:5000/email?email_id=2.1"
+curl "[https://core100-email-library-js.vercel.app/api/email?email_id=2.1](https://core100-email-library-js.vercel.app/api/email?email_id=2.1)"
+💻 Development
+This project is developed using GitHub Codespaces.
 
-    {
-    "email_id": "2.1",
-    "subject": "Let's get everything set up",
-    "introduction": "Welcome to Practice Round 1! I am ready to go.",
-    "report_url": "https://core100-email-api.vercel.app/reports/Round0.pdf",
-    "character": "Caprai",
-    "email_summary": "Caprai welcomes the CEO to their new job at Andrews Corporation.",
-    "skills": "Strategy",
-    "response_type": "multiple choice",
-    "response_options": [
-    "Continue"
-    ]
-    },
+To start developing, launch a new codespace from the repository's main page.
+All tools (Node.js, Git) are pre-configured in the environment.
+Edit the files (api/email-data.js to change data, api/email.js to change logic).
+Commit and push changes via the integrated Source Control panel or the terminal.
+☁️ Deployment
+Deployment is handled automatically by Vercel's integration with GitHub. Any git push to the main branch will trigger a new production deployment.
+
+
