@@ -1,37 +1,26 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 import json
 import os
 
 app = Flask(__name__)
 
-# --- FINAL WORKING CODE ---
+# --- Test Block: Try to load the JSON file ---
+file_load_status = ""
 try:
     script_dir = os.path.dirname(__file__)
     json_path = os.path.join(script_dir, '..', 'Core100EmailLibrary.json')
     with open(json_path, 'r', encoding='utf-8') as f:
         emails = json.load(f)
+    # If we get here, the file was found and parsed successfully.
+    file_load_status = f"SUCCESS: Core100EmailLibrary.json was found and loaded. It contains {len(emails)} records."
 except Exception as e:
-    emails = []
-    print(f"CRITICAL ERROR LOADING JSON: {e}")
+    # If anything goes wrong during file open or JSON parsing, catch the error.
+    file_load_status = f"FAILURE: Could not load JSON file. Error: {e}"
+# --- End of Test Block ---
 
-@app.route('/email', methods=['GET'])
-def get_email_by_id():
-    email_id = request.args.get('email_id')
-    if not email_id:
-        return jsonify({"error": "Please provide an email_id parameter."}), 400
 
-    if not emails:
-        return jsonify({"error": "Email data could not be loaded. Check server logs."}), 500
-
-    match = next((e for e in emails if e.get("email_id") == email_id), None)
-
-    if match:
-        return jsonify(match)
-    else:
-        return jsonify({"error": f"No email found with ID {email_id}."}), 404
-
-@app.route('/status', methods=['GET'])
-def home():
-    if not emails:
-        return "Flask API is running, but FAILED to load email data."
-    return f"Flask API is running and email data is loaded with {len(emails)} records."
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    # This function will now report the status of our file loading test.
+    return file_load_status
