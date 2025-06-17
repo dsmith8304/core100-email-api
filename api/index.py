@@ -11,11 +11,14 @@ try:
     with open(json_path, 'r', encoding='utf-8') as f:
         emails = json.load(f)
 except Exception as e:
-    # This is now just a fallback for safety.
     emails = []
-    # In case of an error, this will be visible in the runtime logs
     print(f"CRITICAL ERROR LOADING JSON: {e}")
-# --- End of Block ---
+
+# --- NEW ROOT ROUTE ---
+@app.route('/', methods=['GET'])
+def root():
+    return "API is online. Please use /api/status or /api/email."
+# --- END OF NEW ROUTE ---
 
 
 # --- The Main API Endpoint to get a specific email ---
