@@ -28,7 +28,7 @@ except json.JSONDecodeError as e:
 
 
 # This is your API endpoint
-@app.route('/api/email', methods=['GET'])
+@app.route('/email', methods=['GET'])
 def get_email_by_id():
     email_id = request.args.get('email_id')
     if not email_id:
