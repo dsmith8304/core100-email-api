@@ -9,7 +9,6 @@ def root():
 
 @app.route('/debug', methods=['GET'])
 def debug():
-    # Log environment details for debugging
     print(f"Current working directory: {os.getcwd()}")
     print(f"Files in directory: {os.listdir('.')}")
     return {
@@ -18,4 +17,7 @@ def debug():
         "files": os.listdir('.')
     }
 
+# Explicitly export for Vercel serverless
+if __name__ == '__main__':
+    app.run()
 application = app
