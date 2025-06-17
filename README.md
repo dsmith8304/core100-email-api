@@ -18,16 +18,18 @@ The API returns the full email object, including character, introduction, respon
 ## 🧪 Sample Request
 
 ```bash
-curl "http://localhost:5000/email?email_id=1.1"
+curl "http://localhost:5000/email?email_id=2.1"
 
-{
-  "email_id": "1.1",
-  "character": "Andrew Grove",
-  "introduction": "Welcome to the company, CEO. We have big shoes to fill.",
-  "response_type": "multiple_choice",
-  "response_options": [
-    "Thank you, I'm ready.",
-    "Let's get to work.",
-    "I'm nervous but excited."
-  ]
-}
+    {
+    "email_id": "2.1",
+    "subject": "Let's get everything set up",
+    "introduction": "Welcome to Practice Round 1! I am ready to go.",
+    "report_url": "https://core100-email-api.vercel.app/reports/Round0.pdf",
+    "character": "Caprai",
+    "email_summary": "Caprai welcomes the CEO to their new job at Andrews Corporation.",
+    "skills": "Strategy",
+    "response_type": "multiple choice",
+    "response_options": [
+    "Continue"
+    ]
+    },
