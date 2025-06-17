@@ -46,7 +46,7 @@ def get_email_by_id():
         return jsonify({"error": f"No email found with ID {email_id}."}), 404
 
 # A default route to check if the server is running
-@app.route('/', methods=['GET'])
+@app.route('/status', methods=['GET'])
 def home():
     if not emails:
         return "Flask API is running, but FAILED to load email data."
