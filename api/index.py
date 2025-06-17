@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-# --- Test Block: Load the JSON and then try to find one record ---
+# --- Test Block: Load, find, and access a field ---
 test_report = ""
 try:
     script_dir = os.path.dirname(__file__)
@@ -14,14 +14,24 @@ try:
 
     test_report += f"SUCCESS: JSON loaded with {len(emails)} records. "
 
-    # --- New Test Logic ---
     match = next((e for e in emails if e.get("email_id") == "2.2"), None)
 
     if match:
-        test_report += "SUCCESS: Found a match for email_id '2.2'."
+        test_report += "SUCCESS: Found a match for email_id '2.2'. "
+
+        # --- New Test Logic ---
+        try:
+            subject = match.get('subject')
+            if subject:
+                test_report += f"SUCCESS: Accessed subject field: '{subject}'"
+            else:
+                test_report += "FAILURE: 'subject' field exists but is empty."
+        except Exception as e_field:
+            test_report += f"FAILURE: Could not access 'subject' field. Error: {e_field}"
+        # --- End of New Test Logic ---
+
     else:
         test_report += "FAILURE: Could not find a match for email_id '2.2'."
-    # --- End of New Test Logic ---
 
 except Exception as e:
     test_report = f"FAILURE: An exception occurred. Error: {e}"
