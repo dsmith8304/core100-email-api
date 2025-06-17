@@ -4,20 +4,16 @@ import os
 
 app = Flask(__name__)
 
-# --- Proven, Working JSON Loading Block ---
+# --- FINAL WORKING CODE ---
 try:
     script_dir = os.path.dirname(__file__)
     json_path = os.path.join(script_dir, '..', 'Core100EmailLibrary.json')
     with open(json_path, 'r', encoding='utf-8') as f:
         emails = json.load(f)
 except Exception as e:
-    # This is now just a fallback for safety.
     emails = []
     print(f"CRITICAL ERROR LOADING JSON: {e}")
-# --- End of Block ---
 
-
-# --- The Main API Endpoint ---
 @app.route('/email', methods=['GET'])
 def get_email_by_id():
     email_id = request.args.get('email_id')
@@ -34,8 +30,6 @@ def get_email_by_id():
     else:
         return jsonify({"error": f"No email found with ID {email_id}."}), 404
 
-
-# --- The Status Check Endpoint ---
 @app.route('/status', methods=['GET'])
 def home():
     if not emails:
