@@ -1,44 +1,45 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 import json
 import os
 
 app = Flask(__name__)
 
-# --- Test Block: Load, find, and access a field ---
-test_report = ""
+# --- Proven, Working JSON Loading Block ---
 try:
     script_dir = os.path.dirname(__file__)
     json_path = os.path.join(script_dir, '..', 'Core100EmailLibrary.json')
     with open(json_path, 'r', encoding='utf-8') as f:
         emails = json.load(f)
-
-    test_report += f"SUCCESS: JSON loaded with {len(emails)} records. "
-
-    match = next((e for e in emails if e.get("email_id") == "2.2"), None)
-
-    if match:
-        test_report += "SUCCESS: Found a match for email_id '2.2'. "
-
-        # --- New Test Logic ---
-        try:
-            subject = match.get('subject')
-            if subject:
-                test_report += f"SUCCESS: Accessed subject field: '{subject}'"
-            else:
-                test_report += "FAILURE: 'subject' field exists but is empty."
-        except Exception as e_field:
-            test_report += f"FAILURE: Could not access 'subject' field. Error: {e_field}"
-        # --- End of New Test Logic ---
-
-    else:
-        test_report += "FAILURE: Could not find a match for email_id '2.2'."
-
 except Exception as e:
-    test_report = f"FAILURE: An exception occurred. Error: {e}"
-# --- End of Test Block ---
+    # This is now just a fallback for safety.
+    emails = []
+    print(f"CRITICAL ERROR LOADING JSON: {e}")
+# --- End of Block ---
 
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    return test_report
+# --- The Main API Endpoint ---
+@app.route('/email', methods=['GET'])
+def get_email_by_id():
+    # This is the line your theory correctly identified as the last untested part.
+    email_id = request.args.get('email_id')
+    
+    if not email_id:
+        return jsonify({"error": "Please provide an email_id parameter."}), 400
+
+    if not emails:
+        return jsonify({"error": "Email data could not be loaded. Check server logs."}), 500
+
+    match = next((e for e in emails if e.get("email_id") == email_id), None)
+    
+    if match:
+        return jsonify(match)
+    else:
+        return jsonify({"error": f"No email found with ID {email_id}."}), 404
+
+
+# --- The Status Check Endpoint ---
+@app.route('/status', methods=['GET'])
+def home():
+    if not emails:
+        return "Flask API is running, but FAILED to load email data."
+    return f"Flask API is running and email data is loaded with {len(emails)} records."
